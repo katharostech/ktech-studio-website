@@ -26,12 +26,14 @@
     "@astrojs/sitemap": "^3.2.1",
     "@astrolib/analytics": "^0.6.1",
     "@astrolib/seo": "^1.0.0-beta.8",
+    "@directus/sdk": "^19.0.0",
     "@fontsource-variable/inter": "^5.1.1",
     "astro": "^5.1.8",
     "astro-embed": "^0.9.0",
     "astro-icon": "^1.1.5",
     "limax": "4.1.0",
     "lodash.merge": "^4.6.2",
+    "marked": "^15.0.6",
     "unpic": "^3.22.0"
   },
   "devDependencies": {
