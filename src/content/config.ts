@@ -57,9 +57,12 @@ const postCollection = defineCollection({
       return {
         id: x.slug,
         title: translation.title,
+        excerpt: translation.excerpt,
         publishDate: new Date(x.published_date),
         content: marked(translation.body),
         tags: x.tags.map((tag) => tag.tags_id.slug),
+        author: x.authors[0]? x.authors[0].directus_users_id.display_name: undefined,
+        co_authors: x.authors? x.authors.map((x) => (x.directus_users_id.display_name)): undefined,
         image: translation.feature_image?.id
           ? `https://directus.katharostech.com/assets/${translation.feature_image.id}`
           : undefined,
@@ -80,6 +83,7 @@ const postCollection = defineCollection({
     category: z.string().optional(),
     tags: z.array(z.string()).optional(),
     author: z.string().optional(),
+    co_authors: z.string().array(),
     content: z.string(),
 
     metadata: metadataDefinition(),
