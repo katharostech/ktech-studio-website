@@ -4,58 +4,40 @@ import Steps from '~/components/widgets/Steps.astro';
 import Layout from '~/layouts/PageLayout.astro';
 import { getPermalink } from '~/utils/permalinks';
 import HeroText from '~/components/widgets/HeroText.astro';
-import { getStaff } from '~/lib/directus.ts';
+import { getStudioStaff, getStudioAbout } from '~/lib/directus.ts';
 
 const metadata = {
   title: 'About us',
 };
-const staff = await getStaff();
+const staff_query = await getStudioStaff();
+const staff = staff_query.studio_staff;
+const hero = staff_query.studio_staff_hero;
+const about = (await getStudioAbout()).studio_about;
 ---
 
 <Layout metadata={metadata}>
   <Hero
-    tagline="About us"
-    actions={[
-      {
-        text: 'Check Out Our Blog',
-        href: getPermalink('/blog'),
-        variant: 'primary',
-      },
-    ]}
-  >
-    <Fragment slot="title">
-      Bringing engaging experiences<br />
-      <span class="text-accent dark:text-white highlight"> Back to the video-game world</span>
-    </Fragment>
-    <Fragment slot="subtitle">
-      K-Tech Studio is an indie video game studio that strives to bring a clean, high quality gaming experience to the
-      world. While many companies are moving toward addictive game models, we prefer to create engaging experiences that
-      people play because they are actually fun and constructive.
-      <br /><br />
-      In today’s video game market, violent and sensational content is numerous while quality gameplay is being neglected.
-      Micro-transactions and ads frequently bombard you, and now with the rise of subscription based payment, companies are
-      taking away your ownership of the games you play.
-      <br /><br />
-      We want to make the kind of games that we have always enjoyed,<br />
-      <strong> Good games that never go out of style. </strong>
-    </Fragment>
-  </Hero>
-
+    tagline={about.tagline}
+    title={about.header}
+    subtitle={about.content}
+    actions={about.actions.map((x) => ({
+      text: x.site_actions_id.text,
+      href: getPermalink(x.site_actions_id.link),
+      variant: x.site_actions_id.variant,
+      icon: x.site_actions_id.icon,
+    }))}
+  />
+  {staff.length > 0 && <HeroText title={hero.title} subtitle={hero.subtitle} tagline={hero.tagline} />}
   {
-    staff.ktech_studio_staff.length > 0 && (
-      <HeroText title="The Team" subtitle="Our small crew and a little of what they do." />
-    )
-  }
-  {
-    staff.ktech_studio_staff.map((x, i) => (
+    staff.map((x, i) => (
       <Steps
         isReversed={i % 2 == 1}
         title={x.username}
         subtitle={x.description}
         items={x.jobs.map((x) => ({
-          icon: x.ktech_studio_staff_jobs_id.icon,
-          title: x.ktech_studio_staff_jobs_id.title,
-          description: x.ktech_studio_staff_jobs_id.description,
+          icon: x.icon,
+          title: x.title,
+          description: x.description,
         }))}
       >
         {x.portrait && (
