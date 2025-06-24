@@ -5,12 +5,11 @@ import Steps2 from '~/components/widgets/Steps2.astro';
 import Steps from '~/components/widgets/Steps.astro';
 import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
-import { getBlogPermalink, getPermalink } from '~/utils/permalinks';
-import Button from '~/components/ui/Button.astro';
-import { getStatusBlocks } from '~/lib/directus';
-import type { Item } from '~/types';
+import { getPermalink } from '~/utils/permalinks';
+import { getStudioHome } from '~/lib/directus';
 
-const blocks = await getStatusBlocks();
+const home = await getStudioHome();
+const hero = home.studio_hero;
 
 const metadata = {
   title: 'Ktech Studio - Game Makers In The Making',
@@ -19,113 +18,76 @@ const metadata = {
 ---
 
 <Layout metadata={metadata}>
-  <Hero tagline="Game Makers" actions={[{ text: 'Blog', variant: 'primary', href: getBlogPermalink() }]}>
-    <Fragment slot="title"> Katharos Tech Studio </Fragment>
-    <Fragment slot="subtitle"> Our Goals, Methods, Dreams, Journey and Knowledge. </Fragment>
-  </Hero>
-
-  <Steps2
-    title="Goal"
-    subtitle="We want to make the kind of games that we have always enjoyed, good games that never go out of style."
-    items={[
-      {
-        title: 'Engaging Experience',
-        description: 'We believe a quality gaming experience should be constructive and engaging.',
-        icon: 'tabler:crosshair',
-      },
-      {
-        title: 'Ethical Content',
-        description: 'Building healthy content with standards about what we put in front of our audience.',
-        icon: 'tabler:seedling',
-      },
-      {
-        title: 'No Alien Brain Suckers!',
-        description: "We don't use predatory sales methods to drain you of your earthly currency!",
-        icon: 'tabler:ufo',
-      },
-    ]}
-  >
-    <Fragment slot="callToAction">
-      <Button variant="primary" icon="tabler:book" href={getPermalink('/about')}>Our Vision</Button>
-    </Fragment>
-  </Steps2>
-
-  <Steps
-    title="Years In The Making"
-    subtitle=""
-    items={[
-      {
-        title: 'Golden Age Inspiration',
-        description:
-          'From the Super NES to the Gamecube we were inspired by some<br/> of the greatest classics of all time.',
-        icon: 'tabler:trophy',
-      },
-      {
-        title: 'Modding Mentality',
-        description:
-          'Modding games was the start to our attempts at making good<br/>games even better, with our love of modding sticking with us to this day.',
-        icon: 'tabler:tool',
-      },
-      {
-        title: 'Makers By Necessity',
-        description:
-          'We began to realize that truly great games were becoming harder to find,<br/> and if we were going to get what we wanted, we would have to do it ourselves.',
-        icon: 'tabler:campfire',
-      },
-    ]}
+  <Hero
+    tagline={hero.tagline}
+    title={hero.title}
+    subtitle={hero.description}
+    actions={hero.actions.map((x) => ({
+      text: x.site_actions_id.text,
+      href: getPermalink(x.site_actions_id.link),
+      variant: x.site_actions_id.variant,
+      icon: x.site_actions_id.icon,
+    }))}
   />
-
-  <Steps2
-    title="Game Development"
-    subtitle="We're figuring out things as we go, developing out in the open."
-    isReversed={false}
-    items={[
-      {
-        title: 'Open-Source Technology',
-        description: 'We use and develop free, open-source technology in order to serve our exact needs.',
-        icon: 'tabler:package',
-      },
-      {
-        title: 'Bug Repellent',
-        description:
-          'Using the Rust Programming Language helps us to develop safe code to prevent bugs from infesting our games.',
-        icon: 'tabler:bug',
-      },
-      {
-        title: 'Documentation',
-        description:
-          "Our blog will cover various projects, tools, and techniques, so you can see what it's like diving into the game industry.",
-        icon: 'tabler:note',
-      },
-    ]}
-  >
-    <Fragment slot="callToAction">
-      <Button variant="primary" icon="tabler:book" href={getBlogPermalink()}>Read Our Blog</Button>
-    </Fragment>
-  </Steps2>
-
+  {
+    home.studio_steps.map((x) =>
+      x.step_kind == 'Steps' ? (
+        <Steps
+          title={x.header}
+          subtitle={x.description}
+          callToAction={
+            x.action && {
+              text: x.action.text,
+              href: getPermalink(x.action.link),
+              variant: x.action.variant,
+              icon: x.action.icon,
+            }
+          }
+          items={x.steps.map((step) => ({
+            title: step.title,
+            description: step.description,
+            icon: step.icon_name,
+          }))}
+        />
+      ) : x.step_kind == 'Steps2' ? (
+        <Steps2
+          title={x.header}
+          subtitle={x.description}
+          callToAction={
+            x.action && {
+              text: x.action.text,
+              href: getPermalink(x.action.link),
+              variant: x.action.variant,
+              icon: x.action.icon,
+            }
+          }
+          items={x.steps.map((step) => ({
+            title: step.title,
+            description: step.description,
+            icon: step.icon_name,
+          }))}
+        />
+      ) : (
+        {}
+      )
+    )
+  }
   <FAQs
     id="status"
     title="Status"
     subtitle="Where's The Fun?"
     tagline=""
     classes={{ container: 'max-w-6xl' }}
-    items={blocks.ktech_studio_status_blocks.map(
-      (x) =>
-        ({
-          title: x.title,
-          description: x.subtitle,
-          callToAction: x.action_name
-            ? {
-                text: x.action_name,
-                variant: x.action_variant,
-                href: x.action_link,
-                icon: x.action_icon,
-              }
-            : undefined,
-        }) satisfies Item
-    )}
+    items={home.studio_status.map((x) => ({
+      title: x.title,
+      description: x.description,
+      callToAction: x.action && {
+        text: x.action.text,
+        href: getPermalink(x.action.link),
+        icon: x.action.icon,
+        variant: x.action.variant,
+      },
+    }))}
   />
-
   <BlogLatestPosts title="Check Out The Latest" information="" />
 </Layout>

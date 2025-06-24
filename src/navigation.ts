@@ -1,5 +1,8 @@
 import { getBlogPermalink, getHomePermalink } from './utils/permalinks.ts';
 import { getPermalink } from "./utils/permalinks.ts";
+import { getStudioFooter } from "./lib/directus.ts";
+
+const footerQuery = (await getStudioFooter());
 
 export const headerData = {
   links: [
@@ -24,21 +27,14 @@ export const headerData = {
 };
 
 export const footerData = {
-  links: [
-    {
-      title: 'Organizations',
-      links: [
-        { text: 'Katharos Group', href: 'https://katharostech.com/' },
-        { text: 'Katharos Technology', href: 'https://katharos.group/' },
-      ],
-    },
-  ],
-  secondaryLinks: [
-    { text: 'Home', href: getPermalink('/')},
-    { text: 'About', href: getPermalink('/about')},
-    { text: 'Status', href: getPermalink('/#status') },
-    { text: 'Blog', href: getBlogPermalink() },
-  ],
+  secondaryLinks: footerQuery.studio_footer.primary_links.map((x)=>({
+    text: x.text,
+    href: getPermalink(x.link),
+  })),
+  links: footerQuery.studio_footer_groups.map((x)=>({
+    title: x.header,
+    links: x.links.map((x)=>({text: x.text, href:x.link})),
+  })),
   socialLinks: [
     { ariaLabel: 'Github', icon: 'tabler:brand-github', href: 'https://github.com/katharostech' },
   ],
