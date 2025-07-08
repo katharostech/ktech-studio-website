@@ -18,12 +18,13 @@ type ArticleTranslation = {
   }
 };
 
-type Tag = {
+type ArticleTag = {
   id: string;
   tags_id: {
     slug: string;
     translations: {
       title: string;
+      subtitle: string | undefined;
       languages_code: {
         code: string;
       };
@@ -36,7 +37,7 @@ type Article = {
   slug: string;
   published_date: string;
   authors: Author[];
-  tags: Tag[];
+  tags: ArticleTag[];
   translations: ArticleTranslation[];
 };
 
@@ -67,6 +68,7 @@ export async function getArticles() {
         slug
         translations {
           title
+          subtitle
           languages_code {
             code
           }
@@ -86,6 +88,34 @@ export async function getArticles() {
     }
   }
 }   
+  `);
+}
+
+type Tag = {
+  slug: string,
+  translations: {
+    title?: string,
+    subtitle?: string,
+    languages_code: {
+      code: string
+    },
+  }[]
+}
+
+export async function getTags() {
+  return await directus.query<{ tags: Tag[] }>(`
+    query {
+      tags {
+        slug
+        translations {
+          title
+          subtitle
+          languages_code {
+            code
+          }
+        }
+      }
+    }
   `);
 }
 

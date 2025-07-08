@@ -6,6 +6,7 @@ import Layout from '~/layouts/PageLayout.astro';
 import BlogList from '~/components/blog/List.astro';
 import Headline from '~/components/blog/Headline.astro';
 import Pagination from '~/components/blog/Pagination.astro';
+import { getTags } from '~/lib/directus';
 
 export const prerender = true;
 
@@ -26,11 +27,21 @@ const metadata = {
     follow: blogTagRobots?.follow,
   },
 };
+
+const directus_tags = (await getTags()).tags;
+const directus_tag = directus_tags.find((x) => x.slug == tag.title);
+const english = directus_tag?.translations.find((x) => x.languages_code.code.startsWith('en'));
 ---
 
 <Layout metadata={metadata}>
   <section class="px-4 md:px-6 py-12 sm:py-16 lg:py-20 mx-auto max-w-4xl">
-    <Headline>{tag.title} Posts</Headline>
+    <Headline subtitle={english?.subtitle}>
+      <div
+        class="leading-tighter tracking-tighter mt-2 md:mt-3 mx-auto text-xl text-gray-500 dark:text-slate-400 font-medium"
+        set:html="Tag"
+      />
+      {english?.title ? english.title : tag.title}
+    </Headline>
     <BlogList posts={page.data} />
     <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} />
   </section>
