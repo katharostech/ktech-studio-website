@@ -52,15 +52,16 @@ const postCollection = defineCollection({
     const data = await getArticles();
 
     return data.articles.map((x) => {
-      const findEnglish = (t: { languages_id: { code: string } }) => t.languages_id.code.startsWith('en');
-      const translation = x.translations.find(findEnglish)!;
+      const findEnglishArticle = (t: { languages_id: { code: string } }) => t.languages_id.code.startsWith('en');
+      const translation = x.translations.find(findEnglishArticle)!;
+      const findEnglishTag = (t: { languages_code: { code: string } }) => t.languages_code.code.startsWith('en');
       return {
         id: x.slug,
         title: translation.title,
         excerpt: translation.excerpt,
         publishDate: new Date(x.published_date),
         content: marked(translation.body),
-        tags: x.tags.map((tag) => tag.tags_id.slug),
+        tags: x.tags.map((tag) => tag.tags_id.translations.find(findEnglishTag)!.title),
         author: x.authors[0]? x.authors[0].directus_users_id.display_name: undefined,
         co_authors: x.authors? x.authors.map((x) => (x.directus_users_id.display_name)): undefined,
         image: translation.feature_image?.id
