@@ -33,7 +33,7 @@ export const footerData = {
   })),
   links: footerQuery.studio_footer_groups.map((x)=>({
     title: x.header,
-    links: x.links.map((x)=>({text: x.text, href:x.link})),
+    links: x.links.map((x)=>({text: x.text, href:getPermalink(x.link)})),
   })),
   socialLinks: [
     { ariaLabel: 'Github', icon: 'tabler:brand-github', href: 'https://github.com/katharostech' },
