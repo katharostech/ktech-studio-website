@@ -299,3 +299,33 @@ const queryStudioFooter = `
 export async function getStudioFooter() {
   return await directus.query<FooterQuery>(queryStudioFooter);
 }
+
+type GameQuery = {
+    studio_games: {
+      title: string,
+      description: string,
+      tag: {
+        slug: string,
+      }
+      image: {
+        id: string,
+      },
+    }[]
+};
+const queryGames = `
+  query {
+    studio_games {
+      title,
+      description,
+      tag {
+        slug
+      }
+      image {
+        id
+      }
+    }
+  }
+`;
+export async function getGames() {
+  return await directus.query<GameQuery>(queryGames);
+}

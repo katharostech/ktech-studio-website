@@ -21,6 +21,10 @@ export const headerData = {
     {
       text: 'Blog',
       href: getBlogPermalink(),
+    },
+    {
+      text: 'Games',
+      href: getPermalink('/games'),
     }
   ],
   // actions: [{ text: 'Download', href: 'https://github.com/onwidget/astrowind', target: '_blank' }],

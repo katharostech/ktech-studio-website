@@ -1,0 +1,45 @@
+---
+import Hero from '~/components/widgets/Hero.astro';
+import Layout from '~/layouts/PageLayout.astro';
+import Button from '~/components/ui/Button.astro';
+import Content from '~/components/widgets/Content.astro';
+import Headline from '~/components/ui/Headline.astro';
+import { getGames } from '~/lib/directus';
+import { getPermalink } from '~/utils/permalinks';
+
+const metadata = {
+  title: 'Video-Games from Ktech Studio',
+};
+const studio_games = await getGames();
+const games = studio_games.studio_games;
+---
+
+<Layout metadata={metadata}>
+  <Hero
+    title="Video Games"
+    tagline="The Fun"
+    subtitle="Check out some games with web demos or read up on blog posts from their related tag pages!"
+  />
+  {
+    games.map((x, i) => (
+      <Content isReversed={i % 2 == 1}>
+        <Fragment slot="content">
+          <Headline title={x.title} subtitle={x.description} />
+          <div class="flex justify-center">
+            <Button text="Game" variant="primary" icon="tabler:device-gamepad-2" class="ml-4 mr-4 sm:mb-0" />
+            <Button
+              text="Posts"
+              variant="primary"
+              icon="tabler:tag"
+              href={getPermalink(`/tag/${x.tag.slug}`)}
+              class="ml-4 mr-4 sm:mb-0"
+            />
+          </div>
+        </Fragment>
+        <Fragment slot="image">
+          <img style="border-radius: 30px;" src={`https://directus.katharostech.com/assets/${x.image.id}`} />
+        </Fragment>
+      </Content>
+    ))
+  }
+</Layout>
