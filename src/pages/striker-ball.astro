@@ -51,14 +51,12 @@ const game = game_query.studio_games.find((x) => x.tag.slug == 'striker-ball');
       />
     </Fragment>
   </Hero>
-  <Content isAfterContent={true}>
-    <Fragment slot="subtitle">
-      <p
-        class="text-xl text-muted mb-6 dark:text-slate-300 intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade"
-        set:html={game?.description}
-      />
-    </Fragment>
-  </Content>
+  <div class="max-w-3xl mx-auto sm:text-center text-xl text-muted dark:text-slate-400">
+    <p
+      class="text-xl text-muted mb-6 dark:text-slate-300 intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade"
+      set:html={game?.description}
+    />
+  </div>
   <CallToAction
     title="Support the Project"
     subtitle="Donate to support game engine development and future games!"
