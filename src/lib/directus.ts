@@ -303,7 +303,15 @@ export async function getStudioFooter() {
 type GameQuery = {
     studio_games: {
       title: string,
+      excerpt: string,
       description: string,
+      description_short: string,
+      demo_link?: string,
+      payment_link?: string,
+      source_link?: string,
+      download_link_linux?: string,
+      download_link_windows?: string,
+      download_link_mac?: string,
       tag: {
         slug: string,
       }
@@ -316,7 +324,15 @@ const queryGames = `
   query {
     studio_games {
       title,
+      excerpt,
       description,
+      description_short,
+      demo_link,
+      payment_link,
+      download_link_linux,
+      download_link_windows,
+      download_link_mac,
+      source_link,
       tag {
         slug
       }

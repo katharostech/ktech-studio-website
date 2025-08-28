@@ -24,9 +24,15 @@ const games = studio_games.studio_games;
     games.map((x, i) => (
       <Content isReversed={i % 2 == 1}>
         <Fragment slot="content">
-          <Headline title={x.title} subtitle={x.description} />
+          <Headline title={x.title} subtitle={x.excerpt} />
           <div class="flex justify-center">
-            <Button text="Game" variant="primary" icon="tabler:device-gamepad-2" class="ml-4 mr-4 sm:mb-0" />
+            <Button
+              text="Game"
+              variant="primary"
+              icon="tabler:device-gamepad-2"
+              href={getPermalink(`/${x.tag.slug}`)}
+              class="ml-4 mr-4 sm:mb-0"
+            />
             <Button
               text="Posts"
               variant="primary"
