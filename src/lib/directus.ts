@@ -311,7 +311,8 @@ type GameQuery = {
       source_link?: string,
       download_link_linux?: string,
       download_link_windows?: string,
-      download_link_mac?: string,
+      download_link_mac_arm?: string,
+      download_link_mac_x86?: string,
       tag: {
         slug: string,
       }
@@ -331,7 +332,8 @@ const queryGames = `
       payment_link,
       download_link_linux,
       download_link_windows,
-      download_link_mac,
+      download_link_mac_arm,
+      download_link_mac_x86,
       source_link,
       tag {
         slug

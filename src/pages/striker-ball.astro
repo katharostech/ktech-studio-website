@@ -93,10 +93,16 @@ const game = game_query.studio_games.find((x) => x.tag.slug == 'striker-ball');
         href: game?.download_link_windows,
       },
       {
-        text: 'Mac',
+        text: 'Mac (ARM)',
         icon: 'tabler:download',
         variant: 'primary',
-        href: game?.download_link_mac,
+        href: game?.download_link_mac_arm,
+      },
+      {
+        text: 'Mac (x86)',
+        icon: 'tabler:download',
+        variant: 'primary',
+        href: game?.download_link_mac_x86,
       },
     ]}
   />
