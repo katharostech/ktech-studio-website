@@ -1,0 +1,39 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import ContactUs from '~/components/widgets/Contact.astro';
+
+const metadata = {
+  title: 'Contact',
+};
+---
+
+<Layout metadata={metadata}>
+  <ContactUs
+    id="form"
+    title="Contact Us!"
+    subtitle="Whether it's a bug report, feedback, a letter of encouragement, or just to connect. We're happy to help!"
+    inputs={[
+      {
+        type: 'text',
+        name: 'name',
+        label: 'Name',
+        placeholder: 'In case it helps to know who you are...',
+      },
+      {
+        type: 'email',
+        name: 'email',
+        label: 'Email',
+        placeholder: 'If you want a response...',
+      },
+    ]}
+    textarea={{
+      label: 'Message',
+      placeholder: 'If you want to actually be useful... 🤨',
+    }}
+    disclaimer={{
+      label:
+        'By submitting this contact form, you acknowledge and agree to the collection of your personal information.',
+    }}
+    description="Thanks for reaching out!"
+  />
+</Layout>
