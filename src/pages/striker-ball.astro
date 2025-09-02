@@ -14,6 +14,7 @@ import Content from '~/components/widgets/Content.astro';
 import BlogHighlightedPosts from '~/components/widgets/BlogHighlightedPosts.astro';
 import RelatedPosts from '~/components/blog/RelatedPosts.astro';
 import { findPostsBySlugs } from '~/utils/blog';
+import { Icon } from 'astro-icon/components';
 
 const metadata = {
   title: 'Striker Ball',
@@ -23,15 +24,17 @@ const game = game_query.studio_games.find((x) => x.tag.slug == 'striker-ball');
 ---
 
 <Layout metadata={metadata}>
-  <Hero
-    tagline="Video Game"
-    title={game?.title}
-    subtitle={game?.description_short}
-    image={{
-      alt: 'striker-ball-image',
-      src: `https://directus.katharostech.com/assets/${game?.image.id}`,
-    }}
-  >
+  <Hero tagline="Video Game" title={game?.title} subtitle={game?.description_short}>
+    <Fragment slot="image">
+      <img
+        class="relative"
+        style="border-radius: 30px;"
+        src={`https://directus.katharostech.com/assets/${game?.image.id}`}
+      />
+      <div class="bg-orange-600 absolute rotate-45 top-2 right-1 font-bold" style="border-radius: 30px; padding: 10px">
+        Beta
+      </div>
+    </Fragment>
     <Fragment slot="content">
       <Stats
         stats={[
@@ -57,6 +60,21 @@ const game = game_query.studio_games.find((x) => x.tag.slug == 'striker-ball');
       set:html={game?.description}
     />
   </div>
+  <section class="bg-orange-600 dark:bg-orange-600 not-prose">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 text-md text-center font-medium">
+      <span class="font-bold">
+        <Icon name="tabler:info-square" class="w-5 h-5 inline-block align-text-bottom" /> Beta:<br /></span
+      > We're still working out the the kinks, please test and contact us below about any issues you have playing.
+    </div>
+  </section>
+  <br />
+  <section class="bg-orange-600 dark:bg-orange-600 not-prose">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 text-md text-center font-medium">
+      <span class="font-bold">
+        <Icon name="tabler:info-square" class="w-5 h-5 inline-block align-text-bottom" /> Platforms:<br /></span
+      > Not all platforms are tested yet, please test and contact us below about any issues you have playing.
+    </div>
+  </section>
   <CallToAction
     title="Support the Project"
     subtitle="Donate to support game engine development and future games!"
@@ -108,13 +126,18 @@ const game = game_query.studio_games.find((x) => x.tag.slug == 'striker-ball');
   />
   <CallToAction
     title="Read More"
-    subtitle="Read about the Skeleton Crew's experience developing the game."
+    subtitle="Read about the Skeleton Crew's experience making the game.<br/>Or, Check out the release notes to see what's changed!"
     actions={[
       {
         text: 'Striker Ball Tag Page',
         icon: 'tabler:tag',
         variant: 'primary',
         href: getPermalink(`/tag/${game?.tag.slug}`),
+      },
+      {
+        text: 'Release Notes',
+        icon: 'tabler:rocket',
+        variant: 'primary',
       },
     ]}
   />
