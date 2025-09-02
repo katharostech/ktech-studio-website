@@ -43,7 +43,17 @@ const games = studio_games.studio_games;
           </div>
         </Fragment>
         <Fragment slot="image">
-          <img style="border-radius: 30px;" src={`https://directus.katharostech.com/assets/${x.image.id}`} />
+          <img
+            class="relative"
+            style="border-radius: 30px;"
+            src={`https://directus.katharostech.com/assets/${x.image.id}`}
+          />
+          <div
+            class="bg-orange-600 absolute rotate-45 top-2 right-1 font-bold"
+            style="border-radius: 30px; padding: 10px;"
+          >
+            Beta
+          </div>
         </Fragment>
       </Content>
     ))
