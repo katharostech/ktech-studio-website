@@ -1,6 +1,25 @@
 import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
 import type { HTMLAttributes, ImageMetadata } from 'astro/types';
 
+declare global {
+  interface Window {
+    /** Incomplete types from: https://github.com/apvarun/toastify-js/tree/master?tab=readme-ov-file#api */
+    Toastify(options: {
+      text: string;
+      className?: string;
+      style?: {
+        background?: string;
+      };
+      offset?: {
+        x?: number;
+        y?: number;
+      };
+      gravity?: 'top' | 'bottom';
+      position?: 'left' | 'right';
+    }): { showToast(): void };
+  }
+}
+
 export interface Post {
   /** A unique ID number that identifies a post. */
   id: string;
@@ -169,6 +188,7 @@ export interface Input {
   label?: string;
   autocomplete?: string;
   placeholder?: string;
+  required?: boolean;
 }
 
 export interface Textarea {
@@ -176,6 +196,7 @@ export interface Textarea {
   name?: string;
   placeholder?: string;
   rows?: number;
+  required?: boolean;
 }
 
 export interface Disclaimer {
