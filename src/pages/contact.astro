@@ -17,22 +17,20 @@ const metadata = {
         type: 'text',
         name: 'name',
         label: 'Name',
-        placeholder: 'In case it helps to know who you are...',
+        placeholder: 'In case it helps to know who you are...'
       },
       {
         type: 'email',
         name: 'email',
         label: 'Email',
         placeholder: 'If you want a response...',
+        required: true,
       },
     ]}
     textarea={{
       label: 'Message',
       placeholder: 'If you want to actually be useful... 🤨',
-    }}
-    disclaimer={{
-      label:
-        'By submitting this contact form, you acknowledge and agree to the collection of your personal information.',
+      required: true,
     }}
     description="Thanks for reaching out!"
   />

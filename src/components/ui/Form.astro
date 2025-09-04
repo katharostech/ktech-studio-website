@@ -2,6 +2,9 @@
 import type { Form as Props } from '~/types';
 import Button from '~/components/ui/Button.astro';
 
+const isProd = import.meta.env.PROD;
+const siteKey = isProd ? '0x4AAAAAAByo9pKriiVamG2A' : '3x00000000000000000000FF';
+
 const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } = Astro.props;
 ---
 
@@ -9,7 +12,7 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
   {
     inputs &&
       inputs.map(
-        ({ type = 'text', name, label = '', autocomplete = 'on', placeholder = '' }) =>
+        ({ type = 'text', name, label = '', autocomplete = 'on', placeholder = '', required = false }) =>
           name && (
             <div class="mb-6">
               {label && (
@@ -23,6 +26,7 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
                 id={name}
                 autocomplete={autocomplete}
                 placeholder={placeholder}
+                required={required}
                 class="py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900"
               />
             </div>
@@ -42,6 +46,7 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
           rows={textarea.rows ? textarea.rows : 4}
           placeholder={textarea.placeholder}
           class="py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900"
+          required={textarea.required || false}
         />
       </div>
     )
@@ -69,7 +74,10 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
 
   {
     button && (
-      <div class="mt-10 grid">
+      <div class="grid">
+        <div class="checkbox my-3 mx-auto">
+          <div class="cf-turnstile" data-sitekey={siteKey} data-theme="dark" />
+        </div>
         <Button variant="primary" type="submit">
           {button}
         </Button>
@@ -85,3 +93,54 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
     )
   }
 </form>
+
+<script define:vars={{ siteKey }} is:inline>
+  window.onloadTurnstileCallback = function () {
+    turnstile.render('#turnstile-challenge', {
+      sitekey: siteKey,
+      callback: function (_) {
+        document.querySelector('button').disabled = false;
+      },
+    });
+  };
+
+  // Add event listener for form submission
+  document.querySelector('form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+
+    // Call the contact webhook
+    try {
+      const response = await fetch('https://ktech-studio-contact-form.deno.dev/contact', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      window
+        .Toastify({
+          text: 'Message sent successfully',
+          style: { background: 'green' },
+        })
+        .showToast();
+
+      // Clear the form fields
+      document.querySelectorAll('input,textarea').forEach((x) => (x.value = ''));
+      window.turnstile.reset();
+      document.querySelector('button').disabled = true;
+    } catch (error) {
+      console.error('Error sending message:', error);
+      window
+        .Toastify({
+          text: 'Error sending message',
+          style: { background: 'red' },
+        })
+        .showToast();
+    }
+  });
+</script>
+
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback" defer></script>
