@@ -174,7 +174,6 @@ export async function getStudioStaff() {
   return await directus.query<StaffQuery>(queryStudioStaff);
 }
 
-
 type AboutQuery = {
   studio_about: {
     tagline: string,
@@ -204,6 +203,38 @@ const queryStudioAbout = `
 `;
 export async function getStudioAbout() {
   return await directus.query<AboutQuery>(queryStudioAbout);
+}
+
+
+type SupportUsQuery = {
+  studio_support_us: {
+    tagline: string,
+    header: string,
+    content: string,
+    actions: {
+      site_actions_id: SiteAction,
+    }[]
+  };
+}
+const queryStudioSupportUs = `
+  query {
+    studio_support_us {
+      tagline
+      header
+      content
+      actions {
+        site_actions_id {
+          text
+          icon
+          variant
+          link
+        } 
+      }
+    } 
+  }
+`;
+export async function getStudioSupportUs() {
+  return await directus.query<SupportUsQuery>(queryStudioSupportUs);
 }
 
 type HomeQuery = {

@@ -7,6 +7,7 @@ import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
 import { getPermalink } from '~/utils/permalinks';
 import { getStudioHome } from '~/lib/directus';
+import CallToAction from '~/components/widgets/CallToAction.astro';
 
 const home = await getStudioHome();
 const hero = home.studio_hero;
@@ -89,5 +90,17 @@ const metadata = {
       },
     }))}
   />
-  <BlogLatestPosts title="Check Out The Latest" information="" count={2} />
+  <BlogLatestPosts title="Check Out The Latest" information="" count={4} />
+  <CallToAction
+    title="Cool Stuff ?"
+    subtitle="Consider donating to support our efforts!"
+    actions={[
+      {
+        text: 'Support Us Page',
+        icon: 'tabler:book',
+        variant: 'primary',
+        href: '/support_us',
+      },
+    ]}
+  />
 </Layout>

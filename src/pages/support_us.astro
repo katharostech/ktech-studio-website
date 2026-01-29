@@ -1,0 +1,27 @@
+---
+import Hero from '~/components/widgets/Hero.astro';
+import Steps from '~/components/widgets/Steps.astro';
+import Layout from '~/layouts/PageLayout.astro';
+import { getPermalink } from '~/utils/permalinks';
+import HeroText from '~/components/widgets/HeroText.astro';
+import { getStudioSupportUs } from '~/lib/directus.ts';
+
+const metadata = {
+  title: 'Support Us',
+};
+const support_us = (await getStudioSupportUs()).studio_support_us;
+---
+
+<Layout metadata={metadata}>
+  <Hero
+    tagline={support_us.tagline}
+    title={support_us.header}
+    subtitle={support_us.content}
+    actions={support_us.actions.map((x) => ({
+      text: x.site_actions_id.text,
+      href: getPermalink(x.site_actions_id.link),
+      variant: x.site_actions_id.variant,
+      icon: x.site_actions_id.icon,
+    }))}
+  />
+</Layout>
