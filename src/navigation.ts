@@ -25,9 +25,9 @@ export const headerData = {
     {
       text: 'Games',
       href: getPermalink('/games'),
-    }
+    },
   ],
-  // actions: [{ text: 'Download', href: 'https://github.com/onwidget/astrowind', target: '_blank' }],
+  actions: [{ text: 'Support Us', href: getPermalink('/supportus'), variant: 'primary' }],
 };
 
 export const footerData = {
