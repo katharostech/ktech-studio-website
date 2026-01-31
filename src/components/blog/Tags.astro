@@ -37,7 +37,7 @@ const english = tags?.map((x) => {
       )}
       <ul class={className}>
         {english.map((tag) => (
-          <li class="bg-gray-100 dark:bg-slate-700 inline-block mr-2 rtl:mr-0 rtl:ml-2 mb-2 py-0.5 px-2 font-medium">
+          <li class="bg-gray-100 bg-slate-700 hover:bg-primary inline-block mr-2 rtl:mr-0 rtl:ml-2 mb-2 py-0.5 px-2 font-medium rounded-md">
             {!APP_BLOG?.tag?.isEnabled ? (
               tag.title
             ) : (
