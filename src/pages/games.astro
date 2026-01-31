@@ -26,34 +26,40 @@ const games = studio_games.studio_games;
         <Fragment slot="content">
           <Headline title={x.title} subtitle={x.excerpt} />
           <div class="flex justify-center">
+            {x.demo_link ? (
+              <Button
+                text="Demo"
+                variant="primary"
+                icon="tabler:device-gamepad-2"
+                href={x.demo_link}
+                class="ml-4 mr-4 sm:mb-0"
+              />
+            ) : (
+              {}
+            )}
             <Button
-              text="View"
+              text="Game Page"
               variant="primary"
-              icon="tabler:device-gamepad-2"
+              icon="tabler:arrow-big-right"
               href={getPermalink(`/${x.tag.slug}`)}
-              class="ml-4 mr-4 sm:mb-0"
-            />
-            <Button
-              text="Posts"
-              variant="primary"
-              icon="tabler:tag"
-              href={getPermalink(`/tag/${x.tag.slug}`)}
               class="ml-4 mr-4 sm:mb-0"
             />
           </div>
         </Fragment>
         <Fragment slot="image">
-          <img
-            class="relative"
-            style="border-radius: 30px;"
-            src={`https://directus.katharostech.com/assets/${x.image.id}`}
-          />
-          {/* <div
+          <a href={getPermalink(`/${x.tag.slug}`)}>
+            <img
+              class="relative"
+              style="border-radius: 30px;"
+              src={`https://directus.katharostech.com/assets/${x.image.id}`}
+            />
+            {/* <div
             class="bg-orange-600 absolute rotate-45 top-2 right-1 font-bold"
             style="border-radius: 30px; padding: 10px;"
-          >
+            >
             Beta
-          </div> */}
+            </div> */}
+          </a>
         </Fragment>
       </Content>
     ))
