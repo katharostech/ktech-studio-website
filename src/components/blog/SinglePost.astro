@@ -38,6 +38,7 @@ const { post /*, url*/ } = Astro.props;
               </>
             )
           } -->
+          Written By
           {
             post.co_authors &&
               post.co_authors.map((x) => (
@@ -68,7 +69,10 @@ const { post /*, url*/ } = Astro.props;
           }
         </p>
       </div>
-
+      <div class="mx-auto px-6 sm:px-6 max-w-3xl mt-4 mb-8 flex justify-between flex-col sm:flex-row">
+        <PostTags tags={post.tags} class="mr-5 rtl:mr-0 rtl:ml-5 md:" />
+        <!-- <SocialShare url={url} text={post.title} class="mt-5 sm:mt-1 align-middle text-gray-500 dark:text-slate-600" /> -->
+      </div>
       <h1
         class="px-4 sm:px-6 max-w-3xl mx-auto text-4xl md:text-5xl font-bold leading-tighter tracking-tighter font-heading"
       >
@@ -84,7 +88,7 @@ const { post /*, url*/ } = Astro.props;
         post.image ? (
           <Image
             src={post.image}
-            class="max-w-full lg:max-w-[900px] mx-auto mb-6 sm:rounded-md bg-gray-400 dark:bg-slate-700"
+            class="max-w-full lg:max-w-[900px] mx-auto mb-6 rounded-md bg-gray-400 dark:bg-slate-700"
             widths={[400, 900]}
             sizes="(max-width: 900px) 400px, 900px"
             alt={post?.excerpt || ''}
